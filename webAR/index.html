@@ -10,19 +10,19 @@
         margin: 0;
       }
       #ui-overlay {
-        position: fixed; /* Tetap di layar */
+        position: fixed;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        z-index: 10; /* Berada di atas adegan AR */
+        z-index: 10;
         display: flex;
         justify-content: center;
-        align-items: flex-end; /* Posisi di bawah */
-        pointer-events: none; /* Biarkan sentuhan tembus ke AR */
+        align-items: flex-end;
+        pointer-events: none;
       }
       #link-button {
-        display: none; /* Sembunyi secara default */
+        display: none;
         padding: 15px 30px;
         font-size: 18px;
         font-family: sans-serif;
@@ -30,9 +30,9 @@
         background-color: #007BFF;
         border: none;
         border-radius: 50px;
-        margin-bottom: 50px; /* Jarak dari bawah */
+        margin-bottom: 50px;
         cursor: pointer;
-        pointer-events: auto; /* Tombol ini bisa disentuh */
+        pointer-events: auto;
         box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
       }
     </style>
@@ -42,7 +42,7 @@
       <button id="link-button">Lihat Detail Gunung</button>
     </div>
 
-    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <img id="peta-abang-texture" src="./abang-suter.png">
       </a-assets>
@@ -60,27 +60,29 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const sceneEl = document.querySelector('#ar-scene');
+        // Logika untuk menampilkan tombol saat target ditemukan sudah benar
         const marker = document.querySelector('#target-marker');
         const button = document.querySelector('#link-button');
 
-        // Saat target ditemukan, tampilkan tombol HTML
         marker.addEventListener("targetFound", event => {
           console.log("Target ditemukan, tampilkan tombol.");
           button.style.display = 'block';
         });
 
-        // Saat target hilang, sembunyikan tombol HTML
         marker.addEventListener("targetLost", event => {
           console.log("Target hilang, sembunyikan tombol.");
           button.style.display = 'none';
         });
         
-        // Tambahkan event klik pada tombol HTML
         button.addEventListener("click", () => {
           console.log("Tombol HTML diklik!");
           window.location.href = '../detail.html?id=mt03st1';
         });
+
+        // Kita perlu menjalankan MindAR secara manual jika autoStart false,
+        // tapi cara termudah adalah dengan menghapus atribut tersebut.
+        // const sceneEl = document.querySelector('#ar-scene');
+        // sceneEl.systems['mindar-image-system'].start();
       });
     </script>
   </body>
