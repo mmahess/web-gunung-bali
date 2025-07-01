@@ -61,11 +61,11 @@
             line-height: 1.7;
             color: #BDBDBD;
             font-size: 0.95em;
-            text-align: justify; /* Teks dibuat rata kanan-kiri */
+            text-align: justify;
         }
         #map-iframe {
             width: 100%;
-            height: 75vh; /* Tinggi peta diperbesar */
+            height: 75vh;
             border: none;
             border-radius: 8px;
         }
@@ -91,11 +91,24 @@
             margin-bottom: 5px;
             font-size: 0.9em;
         }
+        
+        /* --- PENYESUAIAN UNTUK TAMPILAN MOBILE --- */
         @media (max-width: 992px) {
             .info-bawah-list {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            /* Ini adalah bagian kode baru untuk mengatur urutan
+               pada layar yang lebih kecil (tablet ke bawah).
+            */
+            .main-content {
+                order: 1; /* Konten utama (peta+kriteria) jadi item pertama */
+            }
+            .side-info {
+                order: 2; /* Deskripsi jadi item kedua */
+            }
         }
+        
         @media (max-width: 576px) {
             .info-bawah-list {
                 grid-template-columns: 1fr;
