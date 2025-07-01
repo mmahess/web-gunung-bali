@@ -1,75 +1,26 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Gunung di Bali</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            background-color: #121212; /* Latar belakang gelap */
-            color: #E0E0E0; /* Warna teks putih keabuan */
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            font-size: 2.5em;
-            font-weight: 600;
-            text-align: center;
-            color: #FFFFFF;
-            margin-bottom: 40px;
-        }
-        h1 span {
-            color: #66BB6A; /* Warna hijau aksen */
-        }
-        .gunung-list {
-            list-style: none;
-            padding: 0;
-        }
-        .gunung-list li a {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: #1E1E1E; /* Warna kartu sedikit lebih terang */
-            border-left: 5px solid #66BB6A;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #E0E0E0;
-            font-size: 1.1em;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .gunung-list li a:hover {
-            background-color: #2C2C2C;
-            transform: translateY(-5px);
-        }
-        .gunung-list li a::before {
-            content: '⛰️'; /* Ikon gunung */
-            margin-right: 15px;
-            font-size: 1.5em;
-        }
-    </style>
-</head>
-<body>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind; maxTrack: 1;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <img id="peta-abang-texture" src="./abang-suter.png">
+      </a-assets>
 
-<div class="container">
-    <h1>Jelajahi Gunung<span> di Bali</span></h1>
-    <ul class="gunung-list">
-        <li>
-            <a href="detail.html?id=mt03st1">Gunung Abang (via Desa Suter)</a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt01st1">Gunung Agung (via Taman Edelweiss)</a>
-        </li>
-        </ul>
-</div>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-</body>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-image src="#peta-abang-texture"
+                 position="0 0 0.05"
+                 scale="2 2 2"
+                 rotation="0 0 180"> 
+        </a-image>
+      </a-entity>
+    </a-scene>
+  </body>
 </html>
