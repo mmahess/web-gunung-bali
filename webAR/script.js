@@ -5,7 +5,6 @@ AFRAME.registerComponent('tombol-link', {
 
       console.log("Tombol virtual diklik!");
 
-
       window.location.href = '../detail.html?id=mt03st1';
     });
   }
