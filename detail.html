@@ -91,24 +91,28 @@
             margin-bottom: 5px;
             font-size: 0.9em;
         }
-        
-        /* --- PENYESUAIAN UNTUK TAMPILAN MOBILE --- */
+
+        /* --- PERBAIKAN UTAMA UNTUK TAMPILAN MOBILE --- */
         @media (max-width: 992px) {
+            /* Membuat layout utama menjadi kolom vertikal */
+            .content-area {
+                flex-direction: column;
+            }
+            /* Kontainer .main-content dibuat "menghilang" agar anaknya bisa diatur */
+            .main-content {
+                display: contents;
+            }
+
+            /* Mengatur ulang urutan elemen secara spesifik */
+            #map-container { order: 1; } /* Peta di urutan pertama */
+            .side-info { order: 2; } /* Deskripsi di urutan kedua */
+            .info-bawah { order: 3; } /* Kriteria di urutan ketiga */
+
             .info-bawah-list {
                 grid-template-columns: repeat(2, 1fr);
             }
-
-            /* Ini adalah bagian kode baru untuk mengatur urutan
-               pada layar yang lebih kecil (tablet ke bawah).
-            */
-            .main-content {
-                order: 1; /* Konten utama (peta+kriteria) jadi item pertama */
-            }
-            .side-info {
-                order: 2; /* Deskripsi jadi item kedua */
-            }
         }
-        
+
         @media (max-width: 576px) {
             .info-bawah-list {
                 grid-template-columns: 1fr;
@@ -120,9 +124,7 @@
 
 <div class="container">
     <a href="index.html" class="back-button">← Lihat Gunung Lainnya</a>
-
     <h2 id="gunung-nama-tujuan">Memuat...</h2>
-
     <div class="content-area">
         <div class="main-content">
             <div id="map-container">
@@ -138,7 +140,6 @@
                 </ul>
             </div>
         </div>
-
         <div class="side-info">
             <h2>Deskripsi Gunung</h2>
             <p id="deskripsi-gabungan"></p>
@@ -182,10 +183,8 @@
         document.title = `Detail ${data.nama}`;
         document.getElementById('gunung-nama-tujuan').textContent = `${data.nama} - ${data.tujuanPuncak}`;
         document.getElementById('map-iframe').src = data.iframeSrc;
-
         const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Titik awal pendakian dapat diakses melalui ${data.startPoint}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
         document.getElementById('deskripsi-gabungan').innerHTML = `${data.deskripsiGunung}<br><br>${deskripsiParagraf2}`;
-
         document.getElementById('ketinggian').textContent = data.ketinggian;
         document.getElementById('panjang-jalur').textContent = data.panjangJalur;
         document.getElementById('elevasi').textContent = data.elevasi;
