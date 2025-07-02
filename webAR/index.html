@@ -7,13 +7,18 @@
     
     <style>
       body { margin: 0; }
-      #ui-overlay { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 10; display: flex; justify-content: center; align-items: flex-end; pointer-events: none; }
-      #link-button { display: none; padding: 15px 30px; font-size: 18px; font-family: sans-serif; color: white; background-color: #007BFF; border: none; border-radius: 50px; margin-bottom: 50px; cursor: pointer; pointer-events: auto; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4); }
+      #ui-overlay { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 10; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+      #instruction-text { display: block; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 15px 25px; border-radius: 10px; font-family: sans-serif; font-size: 20px; text-align: center; }
+      #button-container { position: absolute; bottom: 50px; left: 0; width: 100%; text-align: center; }
+      #link-button { display: none; padding: 15px 30px; font-size: 18px; font-family: sans-serif; color: white; background-color: #007BFF; border: none; border-radius: 50px; cursor: pointer; pointer-events: auto; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4); }
     </style>
   </head>
   <body>
     <div id="ui-overlay">
-      <button id="link-button">Lihat Detail Gunung</button>
+      <p id="instruction-text">Arahkan kamera ke stiker AR</p>
+      <div id="button-container">
+        <button id="link-button">Lihat Detail Gunung</button>
+      </div>
     </div>
 
     <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -34,45 +39,44 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        // PERUBAHAN ROTASI DI SINI
         const mountainData = {
-          'mt01st1': {
+          'mt01st1': { // Gunung Agung
             petaSrc: '#peta-agung',
             rotasi: '0 0 180',
             detailUrl: '../detail.html?id=mt01st1'
           },
-          'mt03st1': {
+          'mt03st1': { // Gunung Abang
             petaSrc: '#peta-abang',
             rotasi: '0 180 180',
             detailUrl: '../detail.html?id=mt03st1'
           }
-          // Tambahkan data gunung lainnya di sini dengan rotasi yang sesuai
         };
 
         const marker = document.querySelector('#target-marker');
         const button = document.querySelector('#link-button');
         const petaDinamis = document.querySelector('#peta-dinamis');
+        const instructionText = document.querySelector('#instruction-text');
 
         const urlParams = new URLSearchParams(window.location.search);
         const gunungId = urlParams.get('id');
         const dataGunungSaatIni = mountainData[gunungId];
 
         if (!dataGunungSaatIni) {
-          console.error("ID Gunung tidak valid atau tidak ditemukan di URL!");
+          instructionText.innerText = "Error: ID Gunung tidak ditemukan!";
           return;
         }
 
         marker.addEventListener("targetFound", event => {
-          console.log("Menampilkan konten untuk:", gunungId);
-          // Atur gambar peta yang benar
           petaDinamis.setAttribute('src', dataGunungSaatIni.petaSrc);
-          // Atur rotasi yang benar
           petaDinamis.setAttribute('rotation', dataGunungSaatIni.rotasi);
-          
           button.style.display = 'block';
+          instructionText.style.display = 'none';
         });
 
         marker.addEventListener("targetLost", event => {
           button.style.display = 'none';
+          instructionText.style.display = 'block';
         });
         
         button.addEventListener("click", () => {
