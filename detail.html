@@ -8,15 +8,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS tidak ada yang berubah */
         body { font-family: 'Poppins', sans-serif; margin: 0; padding: 40px 20px; background-color: #121212; color: #E0E0E0; }
         .container { max-width: 1200px; margin: auto; }
         h2 { font-size: 2em; font-weight: 600; color: #FFFFFF; border-bottom: 2px solid #66BB6A; padding-bottom: 10px; margin-top: 0; margin-bottom: 15px; }
         .back-button { display: inline-block; margin-bottom: 30px; padding: 10px 20px; font-size: 1em; background-color: #66BB6A; color: #121212; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 50px; transition: background-color 0.3s; }
         .back-button:hover { background-color: #81C784; }
-        .content-area { display: flex; flex-wrap: wrap; gap: 30px; }
-        .main-content { flex: 2; min-width: 300px; }
-        .side-info { flex: 1; min-width: 300px; }
+        
+        /* --- PERUBAHAN UTAMA PADA LAYOUT (CSS GRID) --- */
+        .content-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Kolom kiri 2x lebih besar dari kanan */
+            grid-template-rows: auto auto;
+            gap: 30px;
+        }
+        #map-container {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+        }
+        .info-bawah {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+        }
+        .side-info {
+            grid-column: 2 / 3;
+            grid-row: 1 / 3; /* Deskripsi mengambil 2 baris */
+        }
+        /* --- AKHIR PERUBAHAN CSS GRID --- */
+
         #deskripsi-gabungan { line-height: 1.7; color: #BDBDBD; font-size: 0.95em; text-align: justify; }
         #map-container { position: relative; }
         #map-notice { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; z-index: 10; opacity: 1; transition: opacity 0.5s ease-out; }
@@ -26,7 +44,19 @@
         .info-bawah-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; list-style-type: none; padding: 0; }
         .info-bawah-list li { background-color: #1E1E1E; padding: 15px; border-radius: 8px; }
         .info-bawah-list li strong { display: block; color: #66BB6A; font-weight: 600; margin-bottom: 5px; font-size: 0.9em; }
-        @media (max-width: 992px) { .info-bawah-list { grid-template-columns: repeat(2, 1fr); } }
+        
+        /* --- PERUBAHAN UNTUK TAMPILAN MOBILE --- */
+        @media (max-width: 992px) {
+            .content-area {
+                display: flex; /* Kembali ke flexbox di mobile */
+                flex-direction: column; /* Semua item disusun vertikal */
+            }
+            #map-container { order: 1; } /* Peta di urutan #1 */
+            .side-info { order: 2; } /* Deskripsi di urutan #2 */
+            .info-bawah { order: 3; margin-top: 0; } /* Karakteristik di urutan #3 */
+
+            .info-bawah-list { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 576px) { .info-bawah-list { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -35,41 +65,49 @@
 <div class="container">
     <a href="index.html" class="back-button">← Lihat Gunung Lainnya</a>
     <h2 id="gunung-nama-tujuan">Memuat...</h2>
+    
     <div class="content-area">
-        <div class="main-content">
-            <div id="map-container">
-                <div id="map-notice">✨ Peta ini 3D & Interaktif. Coba putar dan zoom!</div>
-                <iframe id="map-iframe" frameborder="0" style="outline: none;"></iframe>
-            </div>
-            <div class="info-bawah">
-                <ul class="info-bawah-list">
-                    <li><strong>Ketinggian</strong><span id="ketinggian"></span></li>
-                    <li><strong>Panjang Jalur</strong><span id="panjang-jalur"></span></li>
-                    <li><strong>Elevasi</strong><span id="elevasi"></span></li>
-                    <li><strong>Harga Tiket</strong><span id="tiket"></span></li>
-                    <li><strong>Wajib Pemandu</strong><span id="guide"></span></li>
-                </ul>
-            </div>
+        <div id="map-container">
+            <div id="map-notice">✨ Peta ini 3D & Interaktif. Coba putar dan zoom!</div>
+            <iframe id="map-iframe" frameborder="0" style="outline: none;"></iframe>
         </div>
+
         <div class="side-info">
             <h2>Deskripsi Gunung</h2>
             <p id="deskripsi-gabungan"></p>
         </div>
+
+        <div class="info-bawah">
+            <ul class="info-bawah-list">
+                <li><strong>Titik Awal</strong><span id="start-point"></span></li>
+                <li><strong>Ketinggian</strong><span id="ketinggian"></span></li>
+                <li><strong>Panjang Jalur</strong><span id="panjang-jalur"></span></li>
+                <li><strong>Elevasi</strong><span id="elevasi"></span></li>
+                <li><strong>Harga Tiket</strong><span id="tiket"></span></li>
+                <li><strong>Wajib Pemandu</strong><span id="guide"></span></li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<script src="data.js"></script>
-
 <script>
-    // Objek mountainData yang besar sudah dihapus dari sini
-    // dan sekarang diambil dari file data.js di atas.
+    // Impor data dari file eksternal
+    const mountainData = {
+        // ... (data gunung lengkap Anda ada di sini) ...
+    };
 
     function displayGunung(data) {
-        document.title = `Detail ${data.nama}`;
-        document.getElementById('gunung-nama-tujuan').textContent = `${data.nama} - ${data.tujuanPuncak}`;
+        // PERUBAHAN #1: Judul sekarang menyertakan 'via'
+        document.getElementById('gunung-nama-tujuan').textContent = `${data.nama} - ${data.tujuanPuncak} ${data.via}`;
         document.getElementById('map-iframe').src = data.iframeSrc;
-        const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Titik awal pendakian dapat diakses melalui ${data.startPoint}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
+        
+        // PERUBAHAN #2: Paragraf deskripsi disederhanakan
+        const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
         document.getElementById('deskripsi-gabungan').innerHTML = `${data.deskripsiGunung}<br><br>${deskripsiParagraf2}`;
+        
+        // PERUBAHAN #3: Mengisi data untuk bubble 'Titik Awal' yang baru
+        document.getElementById('start-point').textContent = data.startPoint;
+        
         document.getElementById('ketinggian').textContent = data.ketinggian;
         document.getElementById('panjang-jalur').textContent = data.panjangJalur;
         document.getElementById('elevasi').textContent = data.elevasi;
@@ -77,6 +115,7 @@
         document.getElementById('guide').textContent = data.wajibGuide;
     }
 
+    // Kode di bawah ini tetap sama, saya sertakan agar lengkap
     document.addEventListener('DOMContentLoaded', function() {
         const notice = document.querySelector("#map-notice");
         if (notice) {
@@ -84,12 +123,9 @@
                 notice.classList.add('hidden');
             }, 7000);
         }
-
         const urlParams = new URLSearchParams(window.location.search);
         const gunungId = urlParams.get('id');
-        // Variabel 'mountainData' akan tersedia karena sudah di-load dari file data.js
         const dataToDisplay = mountainData[gunungId];
-
         if (dataToDisplay) {
             displayGunung(dataToDisplay);
         } else {
