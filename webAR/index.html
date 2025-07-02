@@ -20,30 +20,33 @@
       <a-assets>
         <img id="peta-agung" src="./map/agung-edelweiss.png">
         <img id="peta-abang" src="./map/abang-suter.png">
-        </a-assets>
+      </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity id="target-marker" mindar-image-target="targetIndex: 0">
         <a-image id="peta-dinamis"
                  position="0 0 0"
-                 scale="1.5 1.5 1.5"
-                 rotation="0 180 0">
+                 scale="2 2 2">
         </a-image>
       </a-entity>
     </a-scene>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+        // --- Struktur Data BARU dengan properti 'rotasi' ---
         const mountainData = {
-          'mt01st1': {
+          'mt01st1': { // Gunung Agung -> Sudah Benar
             petaSrc: '#peta-agung',
+            rotasi: '0 180 0',
             detailUrl: '../detail.html?id=mt01st1'
           },
-          'mt03st1': {
+          'mt03st1': { // Gunung Abang -> Terbalik
             petaSrc: '#peta-abang',
+            rotasi: '0 0 180',
             detailUrl: '../detail.html?id=mt03st1'
           }
+          // Tambahkan data gunung lainnya di sini dengan rotasi yang sesuai
         };
 
         const marker = document.querySelector('#target-marker');
@@ -60,7 +63,12 @@
         }
 
         marker.addEventListener("targetFound", event => {
+          console.log("Menampilkan konten untuk:", gunungId);
+          // Atur gambar peta yang benar
           petaDinamis.setAttribute('src', dataGunungSaatIni.petaSrc);
+          // Atur rotasi yang benar
+          petaDinamis.setAttribute('rotation', dataGunungSaatIni.rotasi);
+          
           button.style.display = 'block';
         });
 
