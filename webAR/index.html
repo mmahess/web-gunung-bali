@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
+    
     <style>
       body { margin: 0; }
       #ui-overlay {
@@ -29,13 +29,17 @@
         font-size: 20px;
         text-align: center;
       }
+      
+      /* --- PERUBAHAN DI SINI --- */
       #button-container {
         position: absolute;
         bottom: 50px;
         left: 0;
         width: 100%;
-        text-align: center; /* Menengahkan tombol */
+        display: flex; /* Menggunakan Flexbox */
+        justify-content: center; /* Memaksa item di dalamnya ke tengah */
       }
+      
       #link-button {
         display: none;
         padding: 15px 30px;
@@ -78,7 +82,6 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Rotasi untuk semua diset ke 0 0 0
         const mountainData = {
           'mt01st1': { petaSrc: '#peta-agung', rotasi: '0 0 0', detailUrl: '../detail.html?id=mt01st1' },
           'mt03st1': { petaSrc: '#peta-abang', rotasi: '0 0 0', detailUrl: '../detail.html?id=mt03st1' }
@@ -109,7 +112,7 @@
           button.style.display = 'none';
           instructionText.style.display = 'block';
         });
-
+        
         button.addEventListener("click", () => {
           window.location.href = dataGunungSaatIni.detailUrl;
         });
