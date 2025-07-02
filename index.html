@@ -66,58 +66,47 @@
 
 <div class="container">
     <h1>Jelajahi Gunung<span> di Bali</span></h1>
-    <ul class="gunung-list">
-        <li>
-            <a href="detail.html?id=mt01st1">
-                <span class="gunung-nama">Gunung Agung</span>
-                <span class="gunung-subtext">Puncak Sejati</span>
-                <span class="gunung-subtext">via Taman Edelweiss</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt01st2">
-                <span class="gunung-nama">Gunung Agung</span>
-                <span class="gunung-subtext">Puncak Sejati</span>
-                <span class="gunung-subtext">via Pengubengan</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt01st3">
-                <span class="gunung-nama">Gunung Agung</span>
-                <span class="gunung-subtext">Puncak Sejati</span>
-                <span class="gunung-subtext">via Pura Pasar Agung</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt01st4">
-                <span class="gunung-nama">Gunung Agung</span>
-                <span class="gunung-subtext">Puncak Selatan</span>
-                <span class="gunung-subtext">via Pura Pasar Agung</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt02st1">
-                <span class="gunung-nama">Gunung Batukaru</span>
-                <span class="gunung-subtext">Puncak Batukaru</span>
-                <span class="gunung-subtext">via Pura Malen Siwa</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt02st2">
-                <span class="gunung-nama">Gunung Batukaru</span>
-                <span class="gunung-subtext">Puncak Batukaru</span>
-                <span class="gunung-subtext">via Pura Petali</span>
-            </a>
-        </li>
-        <li>
-            <a href="detail.html?id=mt03st1">
-                <span class="gunung-nama">Gunung Abang</span>
-                <span class="gunung-subtext">Puncak Abang</span>
-                <span class="gunung-subtext">via Suter</span>
-            </a>
-        </li>
-    </ul>
+    <ul id="gunung-list-container" class="gunung-list"></ul>
 </div>
+
+<script src="data.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const listContainer = document.getElementById('gunung-list-container');
+        
+        // Cek jika mountainData ada sebelum looping
+        if (typeof mountainData !== 'undefined') {
+            // Loop melalui setiap gunung di mountainData dan buat elemen list
+            for (const id in mountainData) {
+                const gunung = mountainData[id];
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `detail.html?id=${id}`;
+
+                const namaSpan = document.createElement('span');
+                namaSpan.className = 'gunung-nama';
+                namaSpan.textContent = gunung.nama;
+
+                const puncakSpan = document.createElement('span');
+                puncakSpan.className = 'gunung-subtext';
+                puncakSpan.textContent = gunung.tujuanPuncak;
+
+                const viaSpan = document.createElement('span');
+                viaSpan.className = 'gunung-subtext';
+                viaSpan.textContent = gunung.via;
+
+                link.appendChild(namaSpan);
+                link.appendChild(puncakSpan);
+                link.appendChild(viaSpan);
+                listItem.appendChild(link);
+                listContainer.appendChild(listItem);
+            }
+        } else {
+            console.error("Objek mountainData tidak ditemukan. Pastikan file data.js sudah benar dan ter-load.");
+        }
+    });
+</script>
 
 </body>
 </html>
