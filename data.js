@@ -1,5 +1,3 @@
-// File: data.js
-
 const mountainData = {
     // Gunung Agung
     'mt01st1': { nama: 'Gunung Agung', tujuanPuncak: 'Puncak Sejati', via: 'via Taman Edelweiss', petaImg: 'agung-edelweiss.png', iframeSrc: 'https://gpx.studio/embed?options=%7B%22token%22%3A%22pk.eyJ1IjoibW1lc3MiLCJhIjoiY21jazkwd3BlMGMxYTJscHhsY3NlNWYzMyJ9.HGlffY0M-HSqy8HKKT3LrA%22%2C%22ids%22%3A%5B%221ygDsvJyJWiZIzDG4mhIOYGFsKKkbXvbW%22%5D%2C%22info%22%3Atrue%2C%22controls%22%3Atrue%2C%22elevation%22%3Atrue%2C%22profile%22%3Atrue%7D', deskripsiGunung: 'Gunung tertinggi di Bali...', ketinggian: '3142 mdpl', lokasi: 'Karangasem', startPoint: 'Taman Edelweiss...', tiket: 'Rp60.000', panjangJalur: '5.84 km', elevasi: '1856 m', deskripsiTrek: 'Dari starting point...', wajibGuide: 'Ya' },
