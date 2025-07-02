@@ -12,8 +12,8 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 40px 20px;
-            background-color: #121212;
-            color: #E0E0E0;
+            background-color: #121212; /* Latar belakang gelap */
+            color: #E0E0E0; /* Warna teks putih keabuan */
         }
         .container {
             max-width: 800px;
@@ -27,34 +27,43 @@
             margin-bottom: 40px;
         }
         h1 span {
-            color: #66BB6A;
+            color: #66BB6A; /* Warna hijau aksen */
         }
         .gunung-list {
             list-style: none;
             padding: 0;
         }
+
+        /* --- PERUBAHAN CSS DI SINI --- */
+
         .gunung-list li a {
-            display: flex;
-            align-items: center;
+            display: block; /* Mengubah dari flex ke block */
             padding: 20px;
             background-color: #1E1E1E;
             border-left: 5px solid #66BB6A;
             margin-bottom: 15px;
             border-radius: 8px;
             text-decoration: none;
-            color: #E0E0E0;
-            font-size: 1.1em;
             transition: background-color 0.3s, transform 0.2s;
         }
         .gunung-list li a:hover {
             background-color: #2C2C2C;
             transform: translateY(-5px);
         }
-        .gunung-list li a::before {
-            content: '⛰️';
-            margin-right: 15px;
-            font-size: 1.5em;
+        .gunung-nama {
+            display: block;
+            color: #FFFFFF;
+            font-size: 1.25em; /* Teks lebih besar */
+            font-weight: 600;
+            margin-bottom: 5px;
         }
+        .gunung-subtext {
+            display: block;
+            color: #BDBDBD; /* Warna subteks lebih redup */
+            font-size: 0.9em;
+            font-weight: 300;
+        }
+
     </style>
 </head>
 <body>
@@ -63,13 +72,25 @@
     <h1>Jelajahi Gunung<span> di Bali</span></h1>
     <ul class="gunung-list">
         <li>
-            <a href="detail.html?id=mt01st1">Gunung Agung (via Taman Edelweiss)</a>
+            <a href="detail.html?id=mt01st1">
+                <span class="gunung-nama">Gunung Agung</span>
+                <span class="gunung-subtext">Puncak Sejati</span>
+                <span class="gunung-subtext">via Taman Edelweiss</span>
+            </a>
         </li>
         <li>
-            <a href="detail.html?id=mt01st2">Gunung Agung (via Pengubengan)</a>
+            <a href="detail.html?id=mt01st2">
+                <span class="gunung-nama">Gunung Agung</span>
+                <span class="gunung-subtext">Puncak Sejati</span>
+                <span class="gunung-subtext">via Pengubengan</span>
+            </a>
         </li>
         <li>
-            <a href="detail.html?id=mt03st1">Gunung Abang (via Desa Suter)</a>
+            <a href="detail.html?id=mt03st1">
+                <span class="gunung-nama">Gunung Abang</span>
+                <span class="gunung-subtext">Puncak Abang</span>
+                <span class="gunung-subtext">via Suter</span>
+            </a>
         </li>
     </ul>
 </div>
