@@ -6,35 +6,9 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
     <style>
-      body {
-        margin: 0;
-      }
-      #ui-overlay {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        pointer-events: none;
-      }
-      #link-button {
-        display: none;
-        padding: 15px 30px;
-        font-size: 18px;
-        font-family: sans-serif;
-        color: white;
-        background-color: #007BFF;
-        border: none;
-        border-radius: 50px;
-        margin-bottom: 50px;
-        cursor: pointer;
-        pointer-events: auto;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
-      }
+      body { margin: 0; }
+      #ui-overlay { position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 10; display: flex; justify-content: center; align-items: flex-end; pointer-events: none; }
+      #link-button { display: none; padding: 15px 30px; font-size: 18px; font-family: sans-serif; color: white; background-color: #007BFF; border: none; border-radius: 50px; margin-bottom: 50px; cursor: pointer; pointer-events: auto; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4); }
     </style>
   </head>
   <body>
@@ -44,45 +18,71 @@
 
     <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <img id="peta-abang-texture" src="./map/abang-suter.png">
-      </a-assets>
+        <img id="peta-agung-texture" src="./map/abang-suter.png">
+        <img id="peta-abang-texture" src="./map/agung-edelweiss.png">
+        </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity id="target-marker" mindar-image-target="targetIndex: 0">
-        <a-image src="#peta-abang-texture"
+        <a-image id="peta-dinamis"
                  position="0 0 0"
-                 scale="1.5 1.5 1.5"
-                 rotation="-180 0 180">
+                 scale="2 2 2"
+                 rotation="0 0 180">
         </a-image>
       </a-entity>
     </a-scene>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Logika untuk menampilkan tombol saat target ditemukan sudah benar
+        // --- Struktur Data untuk setiap gunung ---
+        const mountainData = {
+          'mt01st1': {
+            petaSrc: '#peta-agung-texture',
+            detailUrl: '../detail.html?id=mt01st1'
+          },
+          'mt03st1': {
+            petaSrc: '#peta-abang-texture',
+            detailUrl: '../detail.html?id=mt03st1'
+          }
+          // Tambahkan data gunung lainnya di sini
+        };
+
+        // --- Logika Utama ---
         const marker = document.querySelector('#target-marker');
         const button = document.querySelector('#link-button');
+        const petaDinamis = document.querySelector('#peta-dinamis');
 
+        // 1. Baca ID gunung dari URL saat halaman dimuat
+        const urlParams = new URLSearchParams(window.location.search);
+        const gunungId = urlParams.get('id');
+        const dataGunungSaatIni = mountainData[gunungId];
+
+        if (!dataGunungSaatIni) {
+          console.error("ID Gunung tidak valid atau tidak ditemukan!");
+          return; // Hentikan jika ID tidak ada di data kita
+        }
+
+        // 2. Saat target ditemukan
         marker.addEventListener("targetFound", event => {
-          console.log("Target ditemukan, tampilkan tombol.");
+          console.log("Target Ditemukan! Menampilkan peta untuk:", gunungId);
+          // Atur gambar peta yang benar
+          petaDinamis.setAttribute('src', dataGunungSaatIni.petaSrc);
+          // Tampilkan tombol
           button.style.display = 'block';
         });
 
+        // 3. Saat target hilang
         marker.addEventListener("targetLost", event => {
-          console.log("Target hilang, sembunyikan tombol.");
+          // Sembunyikan tombol
           button.style.display = 'none';
         });
         
+        // 4. Saat tombol HTML diklik
         button.addEventListener("click", () => {
-          console.log("Tombol HTML diklik!");
-          window.location.href = '../detail.html?id=mt03st1';
+          // Arahkan ke halaman detail yang benar
+          window.location.href = dataGunungSaatIni.detailUrl;
         });
-
-        // Kita perlu menjalankan MindAR secara manual jika autoStart false,
-        // tapi cara termudah adalah dengan menghapus atribut tersebut.
-        // const sceneEl = document.querySelector('#ar-scene');
-        // sceneEl.systems['mindar-image-system'].start();
       });
     </script>
   </body>
