@@ -44,10 +44,12 @@
             <button id="lock-button">Kunci Peta & Scroll</button>
             <iframe id="map-iframe" frameborder="0" style="outline: none;"></iframe>
         </div>
+
         <div class="side-info">
             <h2>Deskripsi Gunung</h2>
             <p id="deskripsi-gabungan"></p>
         </div>
+
         <div class="info-bawah">
             <ul class="info-bawah-list">
                 <li><strong>Starting Point</strong>
@@ -81,7 +83,7 @@
         if (match && match[1]) {
             const coordinates = match[1];
             const locationName = startPointText.replace(coordRegex, '').trim();
-            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates}`;
+            const googleMapsUrl = `https://maps.google.com/?q=${coordinates}`;
             gmapsLink.href = googleMapsUrl;
             startPointNameSpan.textContent = locationName;
         } else {
@@ -92,6 +94,9 @@
 
         const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
         
+        // ==========================================================
+        // PERBAIKAN TYPO KRITIS ADA DI BARIS DI BAWAH INI
+        // ==========================================================
         document.getElementById('deskripsi-gabungan').innerHTML = `${data.deskripsiGunung}<br><br>${deskripsiParagraf2}`;
         
         document.getElementById('ketinggian').textContent = data.ketinggian;
@@ -112,3 +117,23 @@
             document.getElementById('gunung-nama-tujuan').textContent = 'Gunung Tidak Ditemukan';
             document.querySelector('.content-area').style.display = 'none';
         }
+
+        const mapOverlay = document.querySelector("#map-overlay");
+        const lockButton = document.querySelector("#lock-button");
+
+        if(mapOverlay && lockButton) {
+            mapOverlay.addEventListener('click', () => {
+                mapOverlay.classList.add('hidden');
+                lockButton.style.display = 'block';
+            });
+
+            lockButton.addEventListener('click', () => {
+                mapOverlay.classList.remove('hidden');
+                lockButton.style.display = 'none';
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
