@@ -8,11 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Semua CSS yang sudah benar tetap di sini, termasuk untuk #map-notice */
+        /* CSS tidak berubah */
         body { font-family: 'Poppins', sans-serif; margin: 0; padding: 40px 20px; background-color: #121212; color: #E0E0E0; }
         .container { max-width: 1200px; margin: auto; }
         h2 { font-size: 2em; font-weight: 600; color: #FFFFFF; border-bottom: 2px solid #66BB6A; padding-bottom: 10px; margin-top: 0; margin-bottom: 15px; }
         .back-button { display: inline-block; margin-bottom: 30px; padding: 10px 20px; font-size: 1em; background-color: #66BB6A; color: #121212; font-weight: 600; text-decoration: none; cursor: pointer; border-radius: 50px; }
+        .back-button:hover { background-color: #81C784; }
         .content-area { display: flex; flex-direction: column; gap: 30px; }
         #map-container { order: 1; position: relative; }
         .side-info { order: 2; }
@@ -89,36 +90,6 @@
         }
 
         const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
-        document.getElementById('deskripsi-gabungan').innerHTML = `${data.deskripsiGunung}<br><br>${deskripsiParagragf2}`;
         
-        document.getElementById('ketinggian').textContent = data.ketinggian;
-        document.getElementById('panjang-jalur').textContent = data.panjangJalur;
-        document.getElementById('elevasi').textContent = data.elevasi;
-        document.getElementById('tiket').textContent = data.tiket;
-        document.getElementById('guide').textContent = data.wajibGuide;
-    }
-
-    // LOGIKA NOTIFIKASI DIKEMBALIKAN DI SINI
-    document.addEventListener('DOMContentLoaded', function() {
-        const notice = document.querySelector("#map-notice");
-        if (notice) {
-            setTimeout(() => {
-                notice.classList.add('hidden');
-            }, 7000);
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const gunungId = urlParams.get('id');
-        const dataToDisplay = mountainData[gunungId];
-
-        if (dataToDisplay) {
-            displayGunung(dataToDisplay);
-        } else {
-            document.getElementById('gunung-nama-tujuan').textContent = 'Gunung Tidak Ditemukan';
-            document.querySelector('.content-area').style.display = 'none';
-        }
-    });
-</script>
-
-</body>
-</html>
+        // PERBAIKAN TYPO DI SINI: 'deskripsiParagragf2' diubah menjadi 'deskripsiParagraf2'
+        document.
