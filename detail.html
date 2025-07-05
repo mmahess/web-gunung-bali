@@ -87,9 +87,9 @@
                 const coordinates = match[1].replace(/\s/g, '');
                 
                 // ==========================================================
-                // PERBAIKAN FINAL: Menggunakan BACKTICK ` bukan kutip biasa '
+                // PERBAIKAN FINAL & DEFINITIF: FORMAT URL GOOGLE MAPS YANG BENAR
                 // ==========================================================
-                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=$3{coordinates}`;
+                const googleMapsUrl = `https://maps.google.com/?q=${coordinates}`;
                 
                 const locationName = startPointText.replace(coordRegex, '').trim();
                 
