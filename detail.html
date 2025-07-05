@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* CSS tidak berubah */
         body { font-family: 'Poppins', sans-serif; margin: 0; padding: 40px 20px; background-color: #121212; color: #E0E0E0; }
         .container { max-width: 1200px; margin: auto; }
         h2 { font-size: 2em; font-weight: 600; color: #FFFFFF; border-bottom: 2px solid #66BB6A; padding-bottom: 10px; margin-top: 0; margin-bottom: 15px; }
@@ -27,7 +28,6 @@
         #lock-button { display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; background-color: #db2a32; color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 3; font-family: 'Poppins', sans-serif; font-weight: 600; }
         .gmaps-link { color: #E0E0E0; text-decoration: none; }
         .gmaps-link:hover { text-decoration: underline; }
-
         @media (max-width: 992px) { .info-bawah-list { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 576px) { .info-bawah-list { grid-template-columns: 1fr; } }
     </style>
@@ -44,12 +44,10 @@
             <button id="lock-button">Kunci Peta & Scroll</button>
             <iframe id="map-iframe" frameborder="0" style="outline: none;"></iframe>
         </div>
-
         <div class="side-info">
             <h2>Deskripsi Gunung</h2>
             <p id="deskripsi-gabungan"></p>
         </div>
-
         <div class="info-bawah">
             <ul class="info-bawah-list">
                 <li><strong>Starting Point</strong>
@@ -74,36 +72,46 @@
         document.getElementById('gunung-nama-tujuan').textContent = `${data.nama} - ${data.tujuanPuncak} ${data.via}`;
         document.getElementById('map-iframe').src = data.iframeSrc;
         
+        // ==========================================================
+        // PERBAIKAN UTAMA: LOGIKA TAHAN BANTING UNTUK GOOGLE MAPS
+        // ==========================================================
         const startPointText = data.startPoint;
         const gmapsLink = document.getElementById('gmaps-link');
         const startPointNameSpan = document.getElementById('start-point-name');
-        const coordRegex = /\(([^)]+)\)/;
-        const match = startPointText.match(coordRegex);
 
-        if (match && match[1]) {
-            const coordinates = match[1];
-            const locationName = startPointText.replace(coordRegex, '').trim();
-            const googleMapsUrl = `https://maps.google.com/?q=${coordinates}`;
-            gmapsLink.href = googleMapsUrl;
-            startPointNameSpan.textContent = locationName;
+        // Pertama, cek apakah data startPoint ada dan bukan string kosong
+        if (startPointText && typeof startPointText === 'string') {
+            const coordRegex = /\(([^)]+)\)/;
+            const match = startPointText.match(coordRegex);
+
+            // Jika ada koordinat di dalam teks
+            if (match && match[1]) {
+                const coordinates = match[1];
+                const locationName = startPointText.replace(coordRegex, '').trim();
+                const googleMapsUrl = `https://maps.google.com/?q=$${coordinates}`;
+                gmapsLink.href = googleMapsUrl;
+                startPointNameSpan.textContent = locationName;
+            } else {
+                // Jika teks ada tapi tidak ada koordinat
+                startPointNameSpan.textContent = startPointText;
+                gmapsLink.href = '#';
+                gmapsLink.style.pointerEvents = 'none';
+            }
         } else {
-            startPointNameSpan.textContent = startPointText;
+            // Jika data startPoint tidak ada sama sekali
+            startPointNameSpan.textContent = "Data tidak tersedia";
             gmapsLink.href = '#';
             gmapsLink.style.pointerEvents = 'none';
         }
 
         const deskripsiParagraf2 = `Gunung ini berlokasi di Kabupaten ${data.lokasi}. Karakteristik jalur pendakiannya adalah ${data.deskripsiTrek}.`;
-        
-        // ==========================================================
-        // PERBAIKAN TYPO KRITIS ADA DI BARIS DI BAWAH INI
-        // ==========================================================
         document.getElementById('deskripsi-gabungan').innerHTML = `${data.deskripsiGunung}<br><br>${deskripsiParagraf2}`;
         
-        document.getElementById('ketinggian').textContent = data.ketinggian;
-        document.getElementById('panjang-jalur').textContent = data.panjangJalur;
-        document.getElementById('elevasi').textContent = data.elevasi;
-        document.getElementById('tiket').textContent = data.tiket;
-        document.getElementById('guide').textContent = data.wajibGuide;
+        document.getElementById('ketinggian').textContent = data.ketinggian || 'N/A';
+        document.getElementById('panjang-jalur').textContent = data.panjangJalur || 'N/A';
+        document.getElementById('elevasi').textContent = data.elevasi || 'N/A';
+        document.getElementById('tiket').textContent = data.tiket || 'N/A';
+        document.getElementById('guide').textContent = data.wajibGuide || 'N/A';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -126,7 +134,6 @@
                 mapOverlay.classList.add('hidden');
                 lockButton.style.display = 'block';
             });
-
             lockButton.addEventListener('click', () => {
                 mapOverlay.classList.remove('hidden');
                 lockButton.style.display = 'none';
