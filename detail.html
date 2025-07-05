@@ -84,14 +84,13 @@
             const match = startPointText.match(coordRegex);
 
             if (match && match[1]) {
-                let coordinates = match[1];
-                // ==========================================================
-                // PERBAIKAN FINAL: Membersihkan semua karakter non-numerik
-                // kecuali koma, titik, dan tanda minus.
-                // ==========================================================
-                coordinates = coordinates.replace(/[^0-9.,-]/g, ''); 
+                const coordinates = match[1].replace(/\s/g, '');
                 
+                // ==========================================================
+                // PERBAIKAN FINAL: Menggunakan BACKTICK (`) bukan kutip biasa (')
+                // ==========================================================
                 const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=$3{coordinates}`;
+                
                 const locationName = startPointText.replace(coordRegex, '').trim();
                 
                 gmapsLink.href = googleMapsUrl;
